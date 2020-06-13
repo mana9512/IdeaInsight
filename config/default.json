@@ -1,0 +1,12 @@
+{
+  "MongoURI": "mongodb+srv://mk-mana:mk-mana@cluster0-aivro.mongodb.net/IdeaOverflow?retryWrites=true&w=majority",
+  "session-secret": "ourSecretGoHere",
+  "facebook-ClientID": "",
+  "facebook-ClientSecret": "",
+  "google-ClientID": "",
+  "google-ClientSecret": "",
+  "twitter-ClientID": "",
+  "twitter-ClientSecret": "",
+  "linkedIn-ClientID": "",
+  "linkedIn-ClientSecret": ""
+}
