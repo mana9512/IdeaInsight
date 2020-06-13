@@ -3,3 +3,5 @@ const bcrypt = require("bcryptjs");
 const config = require("config");
 
 const router = express.Router();
+
+module.exports = router;

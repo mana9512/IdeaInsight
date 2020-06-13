@@ -3,30 +3,35 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const mongoose = require("mongoose");
 const passport = require("passport");
-const User = require("./models/User");
-const config = require("./config");
-const connectDB = require("./config/db");
+const config = require("config");
+const connectDB = require('./config/db');
+const cookieSession = require('cookie-session')
 
-// Middelwares
+
+// Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Express Session
 const sessionSecret = config.get("session-secret");
-app.use(
-  session({
-    secret: sessionSecret,
-    saveUninitialized: true,
-    resave: true,
-  })
-);
+// app.use(
+//   session({
+//     secret: sessionSecret,
+//     saveUninitialized: false,
+//     resave: false,
+//   })
+// );
 
 // Passport init
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cookieSession({
+  name: 'idea-session',
+  keys: ['key1', 'key2']
+}))
+ 
 
 //Connect to database
 connectDB();
