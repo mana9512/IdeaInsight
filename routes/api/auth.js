@@ -3,13 +3,13 @@ const router = express.Router()
 const User = require('../../models/User')
 
 const config = require('config')
-var findOrCreate = require('mongoose-findorcreate')
+var findOrCreate =require('mongoose-findorcreate')
 
 const passport = require('passport');
 
 
 
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
+var GoogleStrategy =  require('passport-google-oauth20').Strategy;
 
 const isLoggedIn = (req, res, next) => {
     if (req.user) {
@@ -33,11 +33,7 @@ passport.use(new GoogleStrategy({
     clientSecret: config.get('google-ClientSecret'),
     callbackURL: "http://localhost:5000/api/auth/google/callback"
 },
-    //   function(accessToken, refreshToken, profile, done) {
-    //        User.findOrCreate({ googleId: profile.id }, function (err, user) {
-    //          return done(err, user);
-    //        });
-    //   }
+
     function (accessToken, refreshToken, profile, done) {
         console.log(profile);
         console.log(accessToken);
