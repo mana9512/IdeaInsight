@@ -7,6 +7,7 @@ const passport = require("passport");
 const config = require("config");
 const connectDB = require('./config/db');
 const cookieSession = require('cookie-session')
+const flash = require('connect-flash');
 
 
 // Middlewares
@@ -31,6 +32,8 @@ app.use(cookieSession({
   name: 'idea-session',
   keys: ['key1', 'key2']
 }))
+
+
  
 
 //Connect to database
