@@ -1,8 +1,8 @@
 {
   "MongoURI": "mongodb+srv://mk-mana:mk-mana@cluster0-aivro.mongodb.net/IdeaOverflow?retryWrites=true&w=majority",
   "session-secret": "ourSecretGoHere",
-  "facebook-ClientID": "",
-  "facebook-ClientSecret": "",
+  "facebook-ClientID": "2605488506369989",
+  "facebook-ClientSecret": "7ea27de35cb94de9a3e46d9e2c8abf1f",
   "google-ClientID": "708720289870-ts23q0egm5kvtimchnlf7h83eho1399u.apps.googleusercontent.com",
   "google-ClientSecret": "6sjzijAvbH0sEsYxY3kFafpk",
   "twitter-ClientID": "",

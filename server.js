@@ -5,10 +5,9 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 const config = require("config");
-const connectDB = require('./config/db');
-const cookieSession = require('cookie-session')
-const flash = require('connect-flash');
-
+const connectDB = require("./config/db");
+const cookieSession = require("cookie-session");
+const flash = require("connect-flash");
 
 // Middlewares
 app.use(bodyParser.json());
@@ -28,13 +27,12 @@ const sessionSecret = config.get("session-secret");
 // Passport init
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cookieSession({
-  name: 'idea-session',
-  keys: ['key1', 'key2']
-}))
-
-
- 
+app.use(
+  cookieSession({
+    name: "idea-session",
+    keys: ["key1", "key2"],
+  })
+);
 
 //Connect to database
 connectDB();
