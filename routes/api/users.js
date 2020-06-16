@@ -2,16 +2,15 @@ const express = require("express");
 const passport = require("passport");
 const User = require("../../models/User");
 const router = express.Router();
-
 const LocalStrategy = require("passport-local").Strategy;
+
+// @todo: failureRedirect not working, finish it!
 
 passport.use(
   new LocalStrategy(function (username, password, done) {
-    console.log("Here");
     User.getUserByUsername(username, function (err, user) {
       if (err) throw err;
-      console.log("Here1");
-      if (user.username !== username) {
+      if (!user) {
         return done(null, false, { message: "Invalid credentials" });
       }
       User.comparePassword(password, user.password, function (err, isMatch) {
@@ -35,6 +34,7 @@ passport.deserializeUser(function (id, done) {
     done(err, user);
   });
 });
+
 router.post("/register", function (req, res) {
   var password = req.body.password;
   var password2 = req.body.password2;
@@ -56,12 +56,20 @@ router.post("/register", function (req, res) {
   }
 });
 
-router.post("/login", passport.authenticate("local"), function (req, res) {
-  res.send(req.user);
-});
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/api/users",
+    failureRedirect: "/api/users/login",
+  }),
+  function (req, res) {
+    res.send(req.user);
+  }
+);
 
 // Endpoint to get current user
 router.get("/", function (req, res) {
+  console.log(req.user);
   res.send(req.user);
 });
 

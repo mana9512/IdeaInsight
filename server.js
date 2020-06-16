@@ -6,33 +6,34 @@ const session = require("express-session");
 const passport = require("passport");
 const config = require("config");
 const connectDB = require("./config/db");
+const path = require("path");
 const cookieSession = require("cookie-session");
-const flash = require("connect-flash");
 
 // Middlewares
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Express Session
 const sessionSecret = config.get("session-secret");
-// app.use(
-//   session({
-//     secret: sessionSecret,
-//     saveUninitialized: false,
-//     resave: false,
-//   })
-// );
+app.use(
+  session({
+    secret: sessionSecret,
+    saveUninitialized: true,
+    resave: true,
+  })
+);
 
 // Passport init
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(
-  cookieSession({
-    name: "idea-session",
-    keys: ["key1", "key2"],
-  })
-);
+// app.use(
+//   cookieSession({
+//     // name: "idea-session",
+//     keys: ["key1", "key2"],
+//   })
+// );
 
 //Connect to database
 connectDB();
