@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const IdeaSchema = new mongoose.Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
   },
   name: {
     type: String,
@@ -13,7 +14,7 @@ const IdeaSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  tag: {
+  tag:  {
     type: [String],
     required: true,
   },

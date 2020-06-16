@@ -20,6 +20,7 @@ passport.use(
       clientID: config.get("google-ClientID"),
       clientSecret: config.get("google-ClientSecret"),
       callbackURL: "http://localhost:5000/api/auth/google/callback",
+
     },
 
     function (accessToken, refreshToken, profile, done) {
@@ -58,7 +59,14 @@ passport.use(
 router.get("/", (req, res) => res.send("Example Home page!"));
 
 router.get("/failed", (req, res) => res.send("Failed to login"));
-router.get("/good", (req, res) => res.send("Welcome"));
+router.get("/good", (req, res) =>{
+  // console.log(req.user.google.token)
+  // res.setHeader('x-auth-token',req.user.google.token);
+  req.headers['x-auth-token'] = req.user.google.token
+  console.log(req.get("x-auth-token"))
+  // console.log(JSON.stringify(req.headers));
+  res.send("Welcome")
+});
 
 router.get(
   "/google",
@@ -69,6 +77,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/failed" }),
   function (req, res) {
+    
     res.redirect("/api/auth/good");
   }
 );

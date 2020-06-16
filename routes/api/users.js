@@ -69,7 +69,6 @@ router.post(
 
 // Endpoint to get current user
 router.get("/", function (req, res) {
-  console.log(req.user);
   res.send(req.user);
 });
 
