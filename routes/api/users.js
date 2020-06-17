@@ -95,6 +95,11 @@ router.post("/register", function (req, res) {
   }
 });
 
+// Endpoint to login
+router.post("/login", passport.authenticate("local"), function (req, res) {
+  res.send(req.user);
+});
+
 // Endpoint to get current user
 router.get("/", function (req, res) {
   res.send(req.user);
