@@ -19,7 +19,7 @@ const IdeaSchema = new mongoose.Schema({
     required: true,
   },
   avatar: {
-    type: String,
+    type: Buffer,
   },
   solution: [
     {

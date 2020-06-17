@@ -27,6 +27,7 @@
     "mongoose": "^5.9.18",
     "mongoose-findorcreate": "^3.0.0",
     "mongoose-type-url": "^2.0.0",
+    "multer": "^1.4.2",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
@@ -34,7 +35,8 @@
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "path": "^0.12.7",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "sharp": "^0.25.4"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
