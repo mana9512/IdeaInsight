@@ -1,20 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const isAuthenticated = require("../../middleware/auth");
+const auth = require("../../middleware/auth");
 const User = require("../../models/User");
 const Solution = require("../../models/Solution");
 const { check, validationResult } = require("express-validator");
 
 //@access private
 //@req- POST
-//@desc- Post a Question
+//@desc- Post a solution
 
 router.post(
   "/",
-  [
-    isAuthenticated,
-    [check("description", "description is required").not().isEmpty()],
-  ],
+  [auth, [check("description", "description is required").not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -22,9 +19,7 @@ router.post(
     }
     try {
       console.log(req.user);
-      const user = await User.findById(
-        req.user.id || req.user.google.id
-      ).select("-password");
+      const user = await User.findById(req.user.id).select("-password");
 
       const newSolution = new Solution({
         description: req.body.description,
@@ -33,8 +28,7 @@ router.post(
       });
 
       const solution = await newSolution.save();
-
-      res.json(idea);
+      res.json(solution);
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Server Error");

@@ -70,42 +70,30 @@ router.post("/register", function (req, res) {
 
     User.createUser(newUser, function (err, user) {
       if (err) throw err;
-      res.send(user).end();
-    });
-    //jwt verification
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
+      //res.send(user).end();
 
-    jwt.sign(
-      payload,
-      config.get("jwtSecret"),
-      {
-        expiresIn: 360000,
-      },
-      (err, token) => {
-        console.log(token);
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
-  } else {
-    res.status(500).send('{errors: "Passwords don\'t match"}').end();
+      //jwt verification
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        {
+          expiresIn: 360000,
+        },
+        (err, token) => {
+          console.log(token);
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+    });
   }
 });
-
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/api/users",
-    failureRedirect: "/api/users/login",
-  }),
-  function (req, res) {
-    res.send(req.user);
-  }
-);
 
 // Endpoint to get current user
 router.get("/", function (req, res) {
