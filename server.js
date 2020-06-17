@@ -39,13 +39,14 @@ app.use(passport.session());
 connectDB();
 
 app.get("/", (req, res) => {
-  console.log(req.user)
-  res.send("API Running")});
+  res.send("API Running");
+});
 
 // Define Routes
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/auth", require("./routes/api/auth"));
 app.use("/api/idea", require("./routes/api/idea"));
+app.use("/api/solution", require("./routes/api/solution"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`));

@@ -3,6 +3,8 @@ const passport = require("passport");
 const User = require("../../models/User");
 const router = express.Router();
 const LocalStrategy = require("passport-local").Strategy;
+const jwt = require("jsonwebtoken");
+const config = require("config");
 
 // @todo: failureRedirect not working, finish it!
 
@@ -16,6 +18,25 @@ passport.use(
       User.comparePassword(password, user.password, function (err, isMatch) {
         if (err) throw err;
         if (isMatch) {
+          //jwt verification
+          const payload = {
+            user: {
+              id: user.id,
+            },
+          };
+
+          jwt.sign(
+            payload,
+            config.get("jwtSecret"),
+            {
+              expiresIn: 360000,
+            },
+            (err, token) => {
+              console.log(token);
+              if (err) throw err;
+              res.json({ token });
+            }
+          );
           return done(null, user);
         } else {
           return done(null, false, { message: "Invalid credentials" });
@@ -51,6 +72,25 @@ router.post("/register", function (req, res) {
       if (err) throw err;
       res.send(user).end();
     });
+    //jwt verification
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      config.get("jwtSecret"),
+      {
+        expiresIn: 360000,
+      },
+      (err, token) => {
+        console.log(token);
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
   } else {
     res.status(500).send('{errors: "Passwords don\'t match"}').end();
   }

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../../models/User");
 const config = require("config");
+const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
@@ -20,7 +21,6 @@ passport.use(
       clientID: config.get("google-ClientID"),
       clientSecret: config.get("google-ClientSecret"),
       callbackURL: "http://localhost:5000/api/auth/google/callback",
-
     },
 
     function (accessToken, refreshToken, profile, done) {
@@ -34,7 +34,7 @@ passport.use(
           if (err) {
             return done(err);
           }
-          //No user was found... so create a new user with values from Facebook (all the profile. stuff)
+          //No user was found... so create a new user with values from Google (all the profile. stuff)
           if (!user) {
             user = new User({
               "google.id": profile.id,
@@ -42,6 +42,26 @@ passport.use(
               "google.email": profile.emails[0].value,
               "google.token": accessToken,
             });
+
+            //jwt verification
+            const payload = {
+              user: {
+                id: user.id,
+              },
+            };
+
+            jwt.sign(
+              payload,
+              config.get("jwtSecret"),
+              {
+                expiresIn: 360000,
+              },
+              (err, token) => {
+                console.log(token);
+                if (err) throw err;
+                res.json({ token });
+              }
+            );
             user.save(function (err) {
               if (err) console.log(err);
               return done(err, user);
@@ -49,6 +69,25 @@ passport.use(
           } else {
             //found user. Return
             console.log("User found");
+            //jwt verification
+            const payload = {
+              user: {
+                id: user.id,
+              },
+            };
+
+            jwt.sign(
+              payload,
+              config.get("jwtSecret"),
+              {
+                expiresIn: 360000,
+              },
+              (err, token) => {
+                console.log(token);
+                if (err) throw err;
+                res.json({ token });
+              }
+            );
             return done(err, user);
           }
         }
@@ -59,13 +98,12 @@ passport.use(
 router.get("/", (req, res) => res.send("Example Home page!"));
 
 router.get("/failed", (req, res) => res.send("Failed to login"));
-router.get("/good", (req, res) =>{
-  // console.log(req.user.google.token)
-  // res.setHeader('x-auth-token',req.user.google.token);
-  req.headers['x-auth-token'] = req.user.google.token
-  console.log(req.get("x-auth-token"))
+router.get("/good", (req, res) => {
+  // req.headers["x-auth-token"] =
+  //   req.user.google.token || req.user.facebook.token;
+  // console.log(req.get("x-auth-token"));
   // console.log(JSON.stringify(req.headers));
-  res.send("Welcome")
+  res.send("Welcome");
 });
 
 router.get(
@@ -77,7 +115,6 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/failed" }),
   function (req, res) {
-    
     res.redirect("/api/auth/good");
   }
 );

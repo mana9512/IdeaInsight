@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../../models/User");
-const Idea = require("../../models/Idea");
 const isAuthenticated = require("../../middleware/auth");
-const auth = require("../../middleware/auth");
+const User = require("../../models/User");
+const Solution = require("../../models/Solution");
 const { check, validationResult } = require("express-validator");
 
 //@access private
@@ -13,12 +12,8 @@ const { check, validationResult } = require("express-validator");
 router.post(
   "/",
   [
-    auth,
-    [
-      check("name", "Name is required").not().isEmpty(),
-      check("tag", "Tag is required").not().isEmpty(),
-      check("description", "description is required").not().isEmpty(),
-    ],
+    isAuthenticated,
+    [check("description", "description is required").not().isEmpty()],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -26,15 +21,18 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const user = await User.findById(req.user.id).select("-password");
-      const newIdea = new Idea({
-        name: req.body.name,
-        tag: req.body.tag,
+      console.log(req.user);
+      const user = await User.findById(
+        req.user.id || req.user.google.id
+      ).select("-password");
+
+      const newSolution = new Solution({
         description: req.body.description,
         user: req.user.id,
+        links: req.user.links,
       });
 
-      const idea = await newIdea.save();
+      const solution = await newSolution.save();
 
       res.json(idea);
     } catch (error) {

@@ -8,5 +8,6 @@
   "twitter-ClientID": "",
   "twitter-ClientSecret": "",
   "linkedIn-ClientID": "",
-  "linkedIn-ClientSecret": ""
+  "linkedIn-ClientSecret": "",
+  "jwtSecret": "sabMohMayaHai"
 }

@@ -1,18 +1,29 @@
-const express = require("express");
-const router = express.Router();
+const config = require("config");
+const jwt = require("jsonwebtoken");
 
-function isAuthenticated(req, res, next) {
-  // do any checks you want to in here
+module.exports = function (req, res, next) {
+  // Get token from the header
+  const token = req.header("x-auth-token");
 
-  // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE
-  // you can do this however you want with whatever variables you set up
-  //console.log(req.user);
-  
-  if (req.isAuthenticated()) return next();
-  if(req.user) return next();
+  // Check if not token
+  if (!token) {
+    return res.status(401).json({ msg: "No token, authorization denied" });
+  }
 
-  // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-  res.redirect("/");
-}
+  // Verify token
+  try {
+    jwt.verify(token, config.get("jwtSecret"), (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ msg: "Token is not valid" });
+      } else {
+        req.user = decoded.user;
+        next();
+      }
+    });
+  } catch (err) {
+    console.error("Something wrong with auth middleware");
+    res.status(500).json({ msg: "Server Error" });
+  }
+};
 
-module.exports = isAuthenticated;
+// module.exports = isAuthenticated;
