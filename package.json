@@ -25,6 +25,7 @@
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.18",
+    "mongoose-autopopulate": "^0.12.2",
     "mongoose-findorcreate": "^3.0.0",
     "mongoose-type-url": "^2.0.0",
     "multer": "^1.4.2",

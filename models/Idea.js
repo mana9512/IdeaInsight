@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const Solution = require("./Solution");
 const Schema = mongoose.Schema;
 
 const IdeaSchema = new mongoose.Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
   },
   name: {
     type: String,
@@ -14,7 +15,7 @@ const IdeaSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  tag:  {
+  tag: {
     type: [String],
     required: true,
   },
@@ -25,6 +26,7 @@ const IdeaSchema = new mongoose.Schema({
     {
       type: Schema.Types.ObjectId,
       ref: "Solution",
+      // autopopulate: true,
     },
   ],
   date: {
@@ -32,4 +34,6 @@ const IdeaSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
 module.exports = Idea = mongoose.model("idea", IdeaSchema);
+// IdeaSchema.plugin(require("mongoose-autopopulate"));
