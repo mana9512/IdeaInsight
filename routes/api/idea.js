@@ -4,6 +4,22 @@ const User = require("../../models/User");
 const Idea = require("../../models/Idea");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
+const multer=require('multer')
+const sharp = require('sharp')
+
+const upload = multer({
+  limits: {
+      fileSize: 1000000
+  },
+  fileFilter(req, file, cb) {
+      if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+          return cb(new Error('Please upload an image'))
+      }
+
+      cb(undefined, true)
+  }
+})
+
 
 //@access private
 //@req- POST
@@ -12,12 +28,13 @@ const { check, validationResult } = require("express-validator");
 router.post(
   "/",
   [
-    auth,
+    auth
+    ,
     [
       check("name", "Name is required").not().isEmpty(),
       check("tag", "Tag is required").not().isEmpty(),
       check("description", "description is required").not().isEmpty(),
-    ],
+    ]
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -42,5 +59,21 @@ router.post(
     }
   }
 );
+router.post('/avatar/:id', auth, upload.single('avatar'), async (req, res) => {
+  try {
+    const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
+  const user = await User.findById(req.user.id).select("-password");
+  const idea = await Idea.findById(req.params.id);
+  idea.avatar = buffer
+
+  await idea.save();
+
+  res.json(idea);
+  } catch (error) {
+    console.error(error.message);
+      res.status(500).send("Server Error");
+    
+  }
+})
 
 module.exports = router;
