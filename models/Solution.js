@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-require("mongoose-type-url");
 const Schema = mongoose.Schema;
 
 const SolutionSchema = new mongoose.Schema({
@@ -12,9 +11,7 @@ const SolutionSchema = new mongoose.Schema({
     required: true,
   },
   links: {
-    work: mongoose.SchemaTypes.Url,
-    profile: mongoose.SchemaTypes.Url,
-    //type: String,
+    type: String,
   },
   avatar: {
     type: String,
