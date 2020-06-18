@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Solution = require("./Solution");
 const Schema = mongoose.Schema;
 
 const IdeaSchema = new mongoose.Schema({
@@ -25,7 +24,7 @@ const IdeaSchema = new mongoose.Schema({
   solution: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Solution",
+      ref: "solution",
       // autopopulate: true,
     },
   ],
@@ -35,5 +34,5 @@ const IdeaSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Idea = mongoose.model("idea", IdeaSchema);
 // IdeaSchema.plugin(require("mongoose-autopopulate"));
+module.exports = Idea = mongoose.model("idea", IdeaSchema);

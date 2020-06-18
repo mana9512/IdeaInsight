@@ -29,15 +29,8 @@ router.post(
         links: req.body.links,
       });
       await newSolution.save();
-      //idea.solution.unshift(newSolution);
+      idea.solution.unshift(newSolution);
       await idea.save();
-
-      Idea.findOne({ _id: req.params.id })
-        .populate("solution")
-        .exec((err, solution) => {
-          console.log("The solutions are populated");
-          console.log(solution);
-        });
 
       res.json(idea.solution);
     } catch (error) {
@@ -49,16 +42,18 @@ router.post(
 
 //@access public
 //@req- GET
-//@desc- Get solutions to an idea
+//@desc- Get all solutions to an idea
 
-// router.get("/:id", async (req, res) => {
-//   try {
-//     //const idea = await Idea.findById(req.params.id);
-//     console.log(Idea.findOne({ name: "hello" }));
-//   } catch (err) {
-//     console.error(error.message);
-//     res.status(500).send("Server Error");
-//   }
-// });
+router.get("/:id", async (req, res) => {
+  try {
+    let foundIdea = await Idea.find({ _id: req.params.id }).populate(
+      "solution"
+    );
+    res.json(foundIdea);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
