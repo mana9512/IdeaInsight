@@ -4,19 +4,19 @@ const User = require("../../models/User");
 const Idea = require("../../models/Idea");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
-const multer=require('multer')
+const multer = require('multer')
 const sharp = require('sharp')
 
 const upload = multer({
   limits: {
-      fileSize: 1000000
+    fileSize: 1000000
   },
   fileFilter(req, file, cb) {
-      if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-          return cb(new Error('Please upload an image'))
-      }
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error('Please upload an image'))
+    }
 
-      cb(undefined, true)
+    cb(undefined, true)
   }
 })
 
@@ -59,20 +59,89 @@ router.post(
     }
   }
 );
+//@access private
+//@req- POST
+//@desc- Upload image
 router.post('/avatar/:id', auth, upload.single('avatar'), async (req, res) => {
   try {
     const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
-  const user = await User.findById(req.user.id).select("-password");
-  const idea = await Idea.findById(req.params.id);
-  idea.avatar = buffer
+    const user = await User.findById(req.user.id).select("-password");
+    const idea = await Idea.findById(req.params.id);
+    idea.avatar = buffer
 
-  await idea.save();
+    await idea.save();
 
-  res.json(idea);
+    res.json(idea);
   } catch (error) {
     console.error(error.message);
-      res.status(500).send("Server Error");
+    res.status(500).send("Server Error");
+
+  }
+})
+
+//@access private
+//@req- get
+//@desc- Get specific Idea
+
+router.get("/:id", async (req, res) => {
+  try {
+    const idea = await Idea.findById(req.params.id);
+    if (!idea) {
+      return res.status(404).send()
+    }
+
+    res.send(idea)
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+})
+
+//@access private
+//@req- get
+//@desc- Get All Ideas
+
+router.get('/', async (req, res) => {
+  // const match = {}
+
+  // if (req.query.completed) {
+  //     match.completed = req.query.completed === 'true'
+  // }
+
+  try {
+    // const ideas=await Idea.populate({
+    //     path: 'solution',
+    //     // match,
+    //     options: {
+    //         limit: parseInt(req.query.limit)      
+    //     }
+    // })
+    const ideas = await Idea.find().limit(1)
+    res.send(ideas)
+  } catch (e) {
+    res.status(500).send()
+  }
+})
+
+//@access private
+//@req- get
+//@desc- Delete
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const idea = await Idea.findOneAndDelete({ _id: req.params.id })
+    console.log(idea);
     
+
+    if (!idea) {
+      return res.status(404).send()
+    }
+    if (idea.user !== req.user._id) {
+      return res.json('User is not authorized to Delete the idea')
+    }
+
+    res.json(idea)
+  } catch (e) {
+    res.status(500).send()
   }
 })
 
