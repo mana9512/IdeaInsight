@@ -53,8 +53,8 @@ router.post(
       const idea = await newIdea.save();
 
       res.json(idea);
-    } catch (error) {
-      console.error(error.message);
+    } catch (err) {
+      console.error(err.message);
       res.status(500).send("Server Error");
     }
   }
@@ -72,10 +72,9 @@ router.post('/avatar/:id', auth, upload.single('avatar'), async (req, res) => {
     await idea.save();
 
     res.json(idea);
-  } catch (error) {
-    console.error(error.message);
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send("Server Error");
-
   }
 })
 
@@ -91,8 +90,8 @@ router.get("/:id", async (req, res) => {
     }
 
     res.send(idea)
-  } catch (error) {
-    console.error(error.message);
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send("Server Error");
   }
 })
@@ -102,24 +101,13 @@ router.get("/:id", async (req, res) => {
 //@desc- Get All Ideas
 
 router.get('/', async (req, res) => {
-  // const match = {}
-
-  // if (req.query.completed) {
-  //     match.completed = req.query.completed === 'true'
-  // }
-
   try {
-    // const ideas=await Idea.populate({
-    //     path: 'solution',
-    //     // match,
-    //     options: {
-    //         limit: parseInt(req.query.limit)      
-    //     }
-    // })
+
     const ideas = await Idea.find().limit(1)
     res.send(ideas)
-  } catch (e) {
-    res.status(500).send()
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 })
 
@@ -130,7 +118,7 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const idea = await Idea.findOneAndDelete({ _id: req.params.id })
     console.log(idea);
-    
+
 
     if (!idea) {
       return res.status(404).send()
@@ -140,9 +128,13 @@ router.delete('/:id', auth, async (req, res) => {
     }
 
     res.json(idea)
-  } catch (e) {
-    res.status(500).send()
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 })
+
+
+
 
 module.exports = router;
