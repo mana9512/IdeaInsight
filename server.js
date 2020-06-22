@@ -8,6 +8,7 @@ const config = require("config");
 const connectDB = require("./config/db");
 const path = require("path");
 const cookieSession = require("cookie-session");
+const Cors = require("cors")
 
 // Middlewares
 app.use(express.static(path.join(__dirname, "public")));
@@ -41,6 +42,7 @@ connectDB();
 app.get("/", (req, res) => {
   res.send("API Running");
 });
+app.use(Cors());
 
 // Define Routes
 app.use("/api/users", require("./routes/api/users"));
