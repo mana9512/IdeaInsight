@@ -42,7 +42,11 @@ connectDB();
 app.get("/", (req, res) => {
   res.send("API Running");
 });
-app.use(Cors());
+// app.use(Cors());
+app.use(Cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 // Define Routes
 app.use("/api/users", require("./routes/api/users"));

@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { login } from "../action/auth";
 import PropTypes from "prop-types";
+import  SocialAuth  from "./SocialAuth";
 
 const Login = ({ login, isAuthenticated }) => {
 
@@ -57,7 +58,7 @@ const Login = ({ login, isAuthenticated }) => {
                             <div className="social-login">
                                 <span className="social-label">Or login with</span>
                                 <ul className="socials">
-                                    <li><a href="#"><i className="fab fa-facebook"></i></a></li>
+                                    <li><SocialAuth /></li>
 
                                     <li><a href="#"><i className="fab fa-google"></i></a></li>
                                 </ul>
