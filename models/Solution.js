@@ -18,16 +18,29 @@ const SolutionSchema = new mongoose.Schema({
     type: String,
   },
   avatar: {
-    type: Buffer
+    type: Buffer,
   },
   date: {
     type: Date,
     default: Date.now,
   },
-  comment: [
+  comments: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "Comment",
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "users",
+      },
+      text: {
+        type: String,
+        require: true,
+      },
+      name: {
+        type: String,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
     },
   ],
   Accept: {
