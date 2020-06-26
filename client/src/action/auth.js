@@ -8,7 +8,6 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -31,7 +30,9 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Register User
-export const register = ({ username,name, email, password }) => async (dispatch) => {
+export const register = ({ username, name, email, password }) => async (
+  dispatch
+) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -39,7 +40,11 @@ export const register = ({ username,name, email, password }) => async (dispatch)
   };
   const body = JSON.stringify({ username, name, email, password });
   try {
-    const res = await axios.post("http://localhost:5000/api/users/register", body, config);
+    const res = await axios.post(
+      "http://localhost:5000/api/users/register",
+      body,
+      config
+    );
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data,
@@ -67,7 +72,11 @@ export const login = (email, password) => async (dispatch) => {
   };
   const body = JSON.stringify({ email, password });
   try {
-    const res = await axios.post("http://localhost:5000/api/users/login", body, config);
+    const res = await axios.post(
+      "http://localhost:5000/api/users/login",
+      body,
+      config
+    );
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
@@ -92,23 +101,24 @@ export const logout = () => (dispatch) => {
 };
 
 // google login
-export const googleLogin = ( accessToken, refreshToken, profile ) => async (dispatch) => {
+export const googleLogin = (accessToken, refreshToken, profile) => async (
+  dispatch
+) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
   console.log(profile);
-  
+
   const body = JSON.stringify({ accessToken, refreshToken, profile });
   console.log(body);
   try {
     const res = await axios.get(
       "http://localhost:5000/api/auth/google",
-      body,
       config
     );
-    console.log(res)
+    console.log(res);
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -118,7 +128,7 @@ export const googleLogin = ( accessToken, refreshToken, profile ) => async (disp
   } catch (err) {
     // const errors = err.response.data.errors;
     console.log("error");
-    
+
     if (err) {
       dispatch(setAlert("Some error occured during login", "danger"));
     }

@@ -42,26 +42,6 @@ passport.use(
               "google.email": profile.emails[0].value,
               "google.token": accessToken,
             });
-
-            //jwt verification
-            const payload = {
-              user: {
-                id: user.id,
-              },
-            };
-
-            jwt.sign(
-              payload,
-              config.get("jwtSecret"),
-              {
-                expiresIn: 360000,
-              },
-              (err, token) => {
-                console.log(token);
-                if (err) throw err;
-                res.json({ token });
-              }
-            );
             user.save(function (err) {
               if (err) console.log(err);
               return done(err, user);
@@ -99,10 +79,6 @@ router.get("/", (req, res) => res.send("Example Home page!"));
 
 router.get("/failed", (req, res) => res.send("Failed to login"));
 router.get("/good", (req, res) => {
-  // req.headers["x-auth-token"] =
-  //   req.user.google.token || req.user.facebook.token;
-  // console.log(req.get("x-auth-token"));
-  // console.log(JSON.stringify(req.headers));
   res.send("Welcome");
 });
 
@@ -115,6 +91,25 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/failed" }),
   function (req, res) {
+    // jwt verification
+    const payload = {
+      user: {
+        id: req.user.google.id,
+      },
+    };
+    jwt.sign(
+      payload,
+      config.get("jwtSecret"),
+      {
+        expiresIn: 360000,
+      },
+      (err, token) => {
+        console.log(token);
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
+    console.log(req.user.google.id);
     res.redirect("/api/auth/good");
   }
 );

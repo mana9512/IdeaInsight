@@ -148,7 +148,7 @@ router.get("/:id", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const ideas = await Idea.find().limit(10);
-    res.send(ideas);
+    res.json(ideas);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
