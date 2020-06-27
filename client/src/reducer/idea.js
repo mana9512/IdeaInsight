@@ -1,7 +1,8 @@
-import { IDEA_SUCCESS, IDEA_FAIL } from "../action/types";
+import { IDEA_SUCCESS, IDEA_FAIL,IDEAPOST_SUCCESS,IDEAPOST_FAIL } from "../action/types";
 
 const initialState = {
   ideas: [],
+  idea: null
 };
 
 export default function (state = initialState, action) {
@@ -17,6 +18,17 @@ export default function (state = initialState, action) {
         ...state,
         ideas: [],
       };
+    case IDEAPOST_SUCCESS:
+      return {
+        ...state,
+        idea: payload,
+      };
+    case IDEAPOST_FAIL:
+        return {
+          ...state,
+          idea: null,
+        };
+
     default:
       return state;
   }

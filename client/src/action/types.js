@@ -9,3 +9,10 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 export const IDEA_SUCCESS = "IDEA_FAIL";
 export const IDEA_FAIL = "IDEA_FAIL";
+export const IDEAPOST_FAIL = "IDEAPOST_FAIL";
+export const IDEAPOST_SUCCESS = "IDEAPOST_SUCCESS";
+export const SOLUTIONPOST_SUCCESS = "SOLUTIONPOST_SUCCESS";
+export const SOLUTIONPOST_FAIL = "SOLUTIONPOST_FAIL";
+
+
+

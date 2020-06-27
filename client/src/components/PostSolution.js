@@ -1,26 +1,25 @@
 import React, { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
-import {postIdeas} from '../action/idea'
+import {postSolutions} from '../action/solution'
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 
-const PostIdea = ({postIdeas, isAuthenticated}) => {
+const PostSolution = ({postSolutions, isAuthenticated, match}) => {
  
   const [formData, setFormData] = useState({
-    name: "",
-    tag: [],
-    description:""
+    description:"",
+    link:""
 });
 
-const { name,tag,description } = formData;
+const { description,link } = formData;
 const onChange = (e) =>
         setFormData({ ...formData, [e.target.name]: e.target.value });
     
       const onSubmit = (e) => {
         e.preventDefault();
-        postIdeas(name,tag,description)
+        console.log(match.params.id);
+        postSolutions(description,link,match.params.id)
       };
-      console.log(isAuthenticated);
       
       // if (!isAuthenticated) {
       //   return <Redirect to="/login" />;
@@ -36,13 +35,11 @@ const onChange = (e) =>
         <div className="card-body">
 
           <form method="POST" onSubmit={(e) => onSubmit(e)}>
+            
+            
             <div className="form-group col-md-10 offset-1">
-              <span>Name:</span>
-              <input type="text" className="form-control" name="name" value={name} id="formGroupExampleInput" onChange={(e) => onChange(e)} />
-            </div>
-            <div className="form-group col-md-10 offset-1">
-              <span>Tag:</span>
-              <input type="text" className="form-control" name="tag" value={tag} id="formGroupExampleInput" onChange={(e) => onChange(e)} />
+              <span>Link:</span>
+              <input type="text" className="form-control" name="link" value={link} id="formGroupExampleInput" onChange={(e) => onChange(e)} />
             </div>
             <div class="form-group col-md-10 offset-1">
               <input type="file" class="form-control-file "  id="exampleFormControlFile1" onChange={(e) => onChange(e)} />
@@ -64,8 +61,8 @@ const onChange = (e) =>
   )
 }
 
-PostIdea.propTypes = {
-  postIdeas:PropTypes.func.isRequired,
+PostSolution.propTypes = {
+  postSolutions:PropTypes.func.isRequired,
 
 }
 
@@ -73,4 +70,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated:state.auth.isAuthenticated
 })
 
-export default connect(mapStateToProps,{postIdeas})(PostIdea)
+export default connect(mapStateToProps,{postSolutions})(PostSolution)

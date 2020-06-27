@@ -6,6 +6,8 @@ import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Idea from "./components/Idea";
 import "bootstrap/dist/css/bootstrap.min.css";
+import PostIdea from "./components/PostIdea";
+import PostSolution from "./components/PostSolution";
 
 //REDUX
 import store from "./store";
@@ -14,7 +16,7 @@ import Alert from "./components/Alert";
 import setAuthToken from "../src/utils/setAuthToken";
 import { loadUser } from "../src/action/auth";
 import Landing from "./components/Landing";
-import PostIdea from "./components/PostIdea";
+
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -37,6 +39,7 @@ const App = () => {
             <Route exact path="/idea" component={Idea} />
             <Route exact path="/" component={Landing} />
             <Route exact path="/ideaPost" component={PostIdea} />
+            <Route exact path="/solutionPost/:id" component={PostSolution} />
           </Switch>
           
         </Fragment>
