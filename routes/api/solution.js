@@ -100,6 +100,47 @@ router.post("/avatar/:id", auth, upload.single("avatar"), async (req, res) => {
   }
 });
 
+//@access private
+//@req- DELETE /api/solution/:id/:solution_id
+//@desc- Delete a solution
+router.delete("/:id/:solution_id", auth, async (req, res) => {
+  try {
+    await Idea.find({ _id: req.params.id })
+      .populate("solution")
+      .exec((err, solu) => {
+        if (err) {
+          res
+            .status(404)
+            .json({ msg: "Solutions not found for current idea!" });
+        }
+        const solution = solu[0].solution.find(
+          (sol) => sol._id == req.params.solution_id
+        );
+
+        // Make sure the solution exists
+        if (!solution) {
+          return res.status(400).json({ msg: "Solution does not exists" });
+        }
+        // Check if the user is authoried to delete the solution
+        if (solution.user != req.user.id) {
+          return res.json("User is not authorized to Delete this solution");
+        }
+
+        // Get the index of comment to be removed
+        const removeIndex = solu[0].solution
+          .map((sol) => sol.user)
+          .indexOf(req.user.id);
+        solu[0].solution.splice(removeIndex, 1);
+
+        solu[0].save();
+        res.json(solu[0].solution);
+      });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route    POST api/solution/comment/:id
 // @desc     Adding comment to a solution
 // @access   private
@@ -132,7 +173,7 @@ router.post(
   }
 );
 
-// @route    DELETE api/posts/comment/:id
+// @route    DELETE api/solution/comment/:id/:comment_id
 // @desc     Delete comment
 // @access   private
 

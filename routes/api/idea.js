@@ -176,9 +176,10 @@ router.delete("/:id", auth, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 //@access private
 //@req- get
-//@desc- Delete an Idea
+//@desc- Update an Idea
 
 router.patch("/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
