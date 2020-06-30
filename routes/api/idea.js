@@ -28,7 +28,7 @@ const upload = multer({
 router.get("/search", (req, res) => {
   const q = JSON.parse(JSON.stringify(url.parse(req.url, true).query));
   // var q = req.query.name;
-  console.log(q.name);
+  // console.log(q.name);
 
   //Full text search using $text
   Idea.find(
@@ -38,7 +38,7 @@ router.get("/search", (req, res) => {
       },
     },
     {
-      _id: 0,
+      // _id: 0,
       _v: 0,
     },
     (err, data) => {

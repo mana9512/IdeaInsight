@@ -7,12 +7,16 @@ export const AUTH_ERROR = "AUTH_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
-export const IDEA_SUCCESS = "IDEA_FAIL";
+export const IDEA_SUCCESS = "IDEA_SUCCESS";
 export const IDEA_FAIL = "IDEA_FAIL";
 export const IDEAPOST_FAIL = "IDEAPOST_FAIL";
 export const IDEAPOST_SUCCESS = "IDEAPOST_SUCCESS";
 export const SOLUTIONPOST_SUCCESS = "SOLUTIONPOST_SUCCESS";
 export const SOLUTIONPOST_FAIL = "SOLUTIONPOST_FAIL";
+export const SEARCH_FAIL = "SEARCH_FAIL";
+export const SEARCH_SUCCESS = "SEARCH_SUCCESS";
+export const ITEM_SUCCESS = "ITEM_SUCCESS";
+export const ITEM_FAIL = "ITEM_FAIL";
 
 
 

@@ -8,6 +8,7 @@ import Idea from "./components/Idea";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PostIdea from "./components/PostIdea";
 import PostSolution from "./components/PostSolution";
+import IdeaItems from "./components/IdeaItems";
 
 //REDUX
 import store from "./store";
@@ -40,6 +41,7 @@ const App = () => {
             <Route exact path="/" component={Landing} />
             <Route exact path="/ideaPost" component={PostIdea} />
             <Route exact path="/solutionPost/:id" component={PostSolution} />
+            <Route exact path="/idea/:id" component={IdeaItems} />
           </Switch>
           
         </Fragment>

@@ -67,7 +67,7 @@ router.get("/:id", async (req, res) => {
       .populate("solution")
       .exec((err, solu) => {
         if (err) res.status(404).json({ msg: "Solution not found!" });
-        res.json(solu[0].solution);
+        res.json(solu[0]);
       });
   } catch (err) {
     console.error(err.message);
