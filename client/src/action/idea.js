@@ -9,9 +9,10 @@ export const loadIdeas = () => async (dispatch) => {
   };
   try {
     const res = await axios.get("http://localhost:5000/api/idea", config);
+    
     dispatch({
       type: IDEA_SUCCESS,
-      payload: res.data,
+      payload:res.data,
     });
   } catch (err) {
     console.log("In catch");
@@ -24,7 +25,7 @@ export const loadIdeas = () => async (dispatch) => {
 export const getIdeaById = (ideaId) => async (dispatch) => {
   try {
     const res = await axios.get(`http://localhost:5000/api/solution/${ideaId}`);
-    // console.log(res);
+    console.log(res.data);
     
     dispatch({
       type: ITEM_SUCCESS,
@@ -64,9 +65,7 @@ export const postIdeas = (name,tag,description) => async (dispatch) => {
   }
 };
 export const search = (name) => async (dispatch) => {
-  // let url = this.props.location.search;
-  // let param = queryString.parse(url);
-  // console.log(param);
+ 
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -77,7 +76,6 @@ export const search = (name) => async (dispatch) => {
   };
   try {
     const res = await axios.get("http://localhost:5000/api/idea/search", config);
-    // console.log(res);
     
     dispatch({
       type: SEARCH_SUCCESS,
