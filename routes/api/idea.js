@@ -85,10 +85,13 @@ router.post(
     }
     try {
       const user = await User.findById(req.user.id).select("-password");
+      const { name, description } = req.body;
+      var tag = req.body.tag;
+      tag = tag.split(",").map((tags) => " " + tags.trim());
       const newIdea = new Idea({
-        name: req.body.name,
-        tag: req.body.tag,
-        description: req.body.description,
+        name: name,
+        tag: tag,
+        description: description,
         user: req.user.id,
       });
 
