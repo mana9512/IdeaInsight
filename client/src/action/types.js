@@ -17,6 +17,5 @@ export const SEARCH_FAIL = "SEARCH_FAIL";
 export const SEARCH_SUCCESS = "SEARCH_SUCCESS";
 export const ITEM_SUCCESS = "ITEM_SUCCESS";
 export const ITEM_FAIL = "ITEM_FAIL";
-
-
-
+export const ADD_COMMENT = "ADD_COMMENT";
+export const COMMENT_FAIL = "COMMENT_FAIL";

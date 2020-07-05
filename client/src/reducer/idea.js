@@ -1,11 +1,23 @@
-import { IDEA_SUCCESS, IDEA_FAIL,IDEAPOST_SUCCESS,IDEAPOST_FAIL,SEARCH_SUCCESS,SEARCH_FAIL,ITEM_SUCCESS,ITEM_FAIL } from "../action/types";
+import {
+  IDEA_SUCCESS,
+  IDEA_FAIL,
+  IDEAPOST_SUCCESS,
+  IDEAPOST_FAIL,
+  SEARCH_SUCCESS,
+  SEARCH_FAIL,
+  ITEM_SUCCESS,
+  ITEM_FAIL,
+  ADD_COMMENT,
+  COMMENT_FAIL,
+} from "../action/types";
 
 const initialState = {
   ideas: [],
   idea: null,
-  searchResults:[],
-  searchfound:null,
-  k:[],
+  searchResults: [],
+  searchfound: null,
+  k: [],
+  error: {},
 };
 
 export default function (state = initialState, action) {
@@ -27,34 +39,42 @@ export default function (state = initialState, action) {
         idea: payload,
       };
     case IDEAPOST_FAIL:
-        return {
-          ...state,
-          idea: null,
-        };
+      return {
+        ...state,
+        idea: null,
+      };
     case SEARCH_SUCCESS:
-          return {
-            ...state,
-            searchfound:true,
-            searchResults: payload,
-          };
+      return {
+        ...state,
+        searchfound: true,
+        searchResults: payload,
+      };
     case SEARCH_FAIL:
       return {
         ...state,
-        searchfound:false,
+        searchfound: false,
         searchResults: [],
       };
-      case ITEM_SUCCESS:
-        return {
-          ...state,
-          k: payload,
-        };
-        case ITEM_FAIL:
-        return {
-          ...state,
-          k: [],
-        };
-
-
+    case ITEM_SUCCESS:
+      return {
+        ...state,
+        k: payload,
+      };
+    case ITEM_FAIL:
+      return {
+        ...state,
+        k: [],
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        k: { ...state.k.solution, comments: payload },
+      };
+    case COMMENT_FAIL:
+      return {
+        ...state,
+        error: payload,
+      };
     default:
       return state;
   }

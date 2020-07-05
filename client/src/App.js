@@ -17,7 +17,7 @@ import Alert from "./components/Alert";
 import setAuthToken from "../src/utils/setAuthToken";
 import { loadUser } from "../src/action/auth";
 import Landing from "./components/Landing";
-
+import CommentForm from "./components/CommentForm";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -43,7 +43,6 @@ const App = () => {
             <Route exact path="/solutionPost/:id" component={PostSolution} />
             <Route exact path="/idea/:id" component={IdeaItems} />
           </Switch>
-          
         </Fragment>
       </Router>
     </Provider>
