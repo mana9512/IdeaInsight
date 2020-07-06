@@ -19,3 +19,6 @@ export const ITEM_SUCCESS = "ITEM_SUCCESS";
 export const ITEM_FAIL = "ITEM_FAIL";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const COMMENT_FAIL = "COMMENT_FAIL";
+export const REMOVE_COMMENT = "REMOVE_COMMENT";
+export const DELIDEA_SUCCESS = "DELIDEA_SUCCESS";
+export const DELSOL_SUCCESS = "DELSOL_SUCCESS";

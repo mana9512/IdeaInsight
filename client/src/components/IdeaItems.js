@@ -2,21 +2,39 @@ import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getIdeaById } from "../action/idea";
-import { addComment } from "../action/solution";
+import { addComment, delSolutionById } from "../action/solution";
 import { Link } from "react-router-dom";
 import CommentForm from "./CommentForm";
 import CommentItems from "./CommentItems";
+import { delIdeaById } from "../action/idea";
+import { Redirect } from "react-router-dom";
+import moment from "moment";
 
 const IdeaItems = ({
   match,
   getIdeaById,
   addComment,
+  auth,
+  delIdeaById,
+  delSolutionById,
   k: { tag = [], name, description, solution = [], user, date },
+  del,
 }) => {
   useEffect(() => {
     getIdeaById(match.params.id);
   }, null);
 
+  const deleteIdea = (e) => {
+    e.preventDefault();
+    delIdeaById(match.params.id);
+  };
+  const deleteSolution = (e, id) => {
+    e.preventDefault();
+    delSolutionById(match.params.id, id);
+  };
+  if (del) {
+    return <Redirect to="/idea" />;
+  }
   return (
     <Fragment>
       <center style={{ width: "100%", background: "#f3f3f5" }}>
@@ -314,6 +332,26 @@ const IdeaItems = ({
                               Post Solution
                             </Link>
                           </td>
+                          <td>
+                            {auth.user === null ? (
+                              <Fragment></Fragment>
+                            ) : (
+                              user === auth.user._id && (
+                                <span style={{ marginLeft: "10px" }}>
+                                  <i
+                                    class="fas fa-trash fa-lg"
+                                    style={{
+                                      color: "black",
+                                      float: "right",
+                                      marginLeft: "50px",
+                                    }}
+                                    type="button"
+                                    onClick={(e) => deleteIdea(e)}
+                                  ></i>
+                                </span>
+                              )
+                            )}
+                          </td>
                         </tr>
                       </table>
                     </td>
@@ -430,6 +468,28 @@ const IdeaItems = ({
                                       “Standard” listings?
                                     </a>
                                   </td>
+                                  <td>
+                                    {auth.user === null ? (
+                                      <Fragment></Fragment>
+                                    ) : (
+                                      user === auth.user._id && (
+                                        <span style={{ marginLeft: "10px" }}>
+                                          <i
+                                            class="fas fa-trash fa-sm"
+                                            style={{
+                                              color: "black",
+                                              float: "right",
+                                              marginLeft: "50px",
+                                            }}
+                                            type="button"
+                                            onClick={(e) =>
+                                              deleteSolution(e, solu._id)
+                                            }
+                                          ></i>
+                                        </span>
+                                      )
+                                    )}
+                                  </td>
                                 </tr>
                                 <tr>
                                   <td style={{ paddingBottom: "15px" }}>
@@ -466,7 +526,12 @@ const IdeaItems = ({
                                             color: "#828282",
                                           }}
                                         >
-                                          Thomas A. Limoncelli provided {date}
+                                          {solu.user.name}
+                                          <span style={{ marginLeft: "10px" }}>
+                                            {moment().format(
+                                              "MMMM Do YYYY, h:mm a"
+                                            )}
+                                          </span>
                                         </td>
                                       </tr>
                                     </table>
@@ -501,7 +566,7 @@ const IdeaItems = ({
                                       <CommentItems
                                         key={comment._id}
                                         comment={comment}
-                                        solutionId={solu._id}
+                                        Id={solu._id}
                                       />
                                     ))}
 
@@ -528,11 +593,22 @@ const IdeaItems = ({
 IdeaItems.propTypes = {
   getIdeaById: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
+  delIdeaById: PropTypes.func.isRequired,
+  delSolutionById: PropTypes.func.isRequired,
   k: PropTypes.object.isRequired,
+  del: PropTypes.bool.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   k: state.idea.k,
+  del: state.idea.del,
+  auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getIdeaById, addComment })(IdeaItems);
+export default connect(mapStateToProps, {
+  getIdeaById,
+  addComment,
+  delIdeaById,
+  delSolutionById,
+})(IdeaItems);

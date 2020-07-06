@@ -9,6 +9,9 @@ import {
   ITEM_FAIL,
   ADD_COMMENT,
   COMMENT_FAIL,
+  REMOVE_COMMENT,
+  DELIDEA_SUCCESS,
+  DELSOL_SUCCESS,
 } from "../action/types";
 
 const initialState = {
@@ -18,6 +21,7 @@ const initialState = {
   searchfound: null,
   k: [],
   error: {},
+  del: false,
 };
 
 export default function (state = initialState, action) {
@@ -65,10 +69,35 @@ export default function (state = initialState, action) {
         ...state,
         k: [],
       };
+    case DELIDEA_SUCCESS:
+      return {
+        ...state,
+        k: [],
+        del: true,
+      };
+    case DELSOL_SUCCESS:
+      return {
+        ...state,
+        k: {
+          ...state.k,
+          solution: state.k.solution.filter((solu) => solu._id !== payload),
+        },
+        del: false,
+      };
     case ADD_COMMENT:
       return {
         ...state,
         k: { ...state.k.solution, comments: payload },
+      };
+    case REMOVE_COMMENT:
+      return {
+        ...state,
+        k: {
+          ...state.k.solution,
+          comments: state.k.solution.comments.filter(
+            (comment) => comment._id !== payload
+          ),
+        },
       };
     case COMMENT_FAIL:
       return {

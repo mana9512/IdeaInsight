@@ -64,7 +64,13 @@ router.post(
 router.get("/:id", async (req, res) => {
   try {
     await Idea.find({ _id: req.params.id })
-      .populate("solution")
+      .populate({
+        path: "solution",
+        populate: {
+          path: "user",
+          model: "User",
+        },
+      })
       .exec((err, solu) => {
         if (err) res.status(404).json({ msg: "Solution not found!" });
         res.json(solu[0]);

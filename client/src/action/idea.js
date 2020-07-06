@@ -1,5 +1,16 @@
 import axios from "axios";
-import { IDEA_SUCCESS, IDEA_FAIL,IDEAPOST_FAIL,IDEAPOST_SUCCESS,SEARCH_FAIL,SEARCH_SUCCESS ,ITEM_FAIL,ITEM_SUCCESS} from "./types";
+import {
+  IDEA_SUCCESS,
+  IDEA_FAIL,
+  IDEAPOST_FAIL,
+  IDEAPOST_SUCCESS,
+  SEARCH_FAIL,
+  SEARCH_SUCCESS,
+  ITEM_FAIL,
+  ITEM_SUCCESS,
+  DELIDEA_FAIL,
+  DELIDEA_SUCCESS,
+} from "./types";
 
 export const loadIdeas = () => async (dispatch) => {
   const config = {
@@ -9,10 +20,10 @@ export const loadIdeas = () => async (dispatch) => {
   };
   try {
     const res = await axios.get("http://localhost:5000/api/idea", config);
-    
+
     dispatch({
       type: IDEA_SUCCESS,
-      payload:res.data,
+      payload: res.data,
     });
   } catch (err) {
     console.log("In catch");
@@ -25,8 +36,7 @@ export const loadIdeas = () => async (dispatch) => {
 export const getIdeaById = (ideaId) => async (dispatch) => {
   try {
     const res = await axios.get(`http://localhost:5000/api/solution/${ideaId}`);
-    console.log(res.data);
-    
+
     dispatch({
       type: ITEM_SUCCESS,
       payload: res.data,
@@ -39,7 +49,7 @@ export const getIdeaById = (ideaId) => async (dispatch) => {
   }
 };
 
-export const postIdeas = (name,tag,description) => async (dispatch) => {
+export const postIdeas = (name, tag, description) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -65,18 +75,20 @@ export const postIdeas = (name,tag,description) => async (dispatch) => {
   }
 };
 export const search = (name) => async (dispatch) => {
- 
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
-    params:{
-      name:name
-    }
+    params: {
+      name: name,
+    },
   };
   try {
-    const res = await axios.get("http://localhost:5000/api/idea/search", config);
-    
+    const res = await axios.get(
+      "http://localhost:5000/api/idea/search",
+      config
+    );
+
     dispatch({
       type: SEARCH_SUCCESS,
       payload: res.data,
@@ -85,6 +97,22 @@ export const search = (name) => async (dispatch) => {
     console.log("In catch");
     dispatch({
       type: SEARCH_FAIL,
+    });
+  }
+};
+
+export const delIdeaById = (ideaId) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`http://localhost:5000/api/idea/${ideaId}`);
+
+    dispatch({
+      type: DELIDEA_SUCCESS,
+    });
+  } catch (err) {
+    console.log(err);
+    console.log("In catch");
+    dispatch({
+      type: ITEM_FAIL,
     });
   }
 };

@@ -4,6 +4,8 @@ import {
   SOLUTIONPOST_FAIL,
   ADD_COMMENT,
   COMMENT_FAIL,
+  REMOVE_COMMENT,
+  DELSOL_SUCCESS,
 } from "./types";
 import { setAlert } from "./alert";
 
@@ -53,5 +55,47 @@ export const addComment = (solutionId, formData) => async (dispatch) => {
       type: COMMENT_FAIL,
       payload: { msg: err.response.statusText, status: err.response.status },
     });
+  }
+};
+
+// Delete comment
+export const deleteComment = (solutionId, commentId) => async (dispatch) => {
+  try {
+    await axios.delete(
+      `http://localhost:5000/api/solution/comment/${solutionId}/${commentId}`
+    );
+
+    dispatch({
+      type: REMOVE_COMMENT,
+      payload: commentId,
+    });
+
+    dispatch(setAlert("Comment Removed", "success"));
+  } catch (err) {
+    console.log(err);
+
+    // dispatch({
+    //   type: COMMENT_FAIL,
+    //   payload: { msg: err.response.statusText, status: err.response.status },
+    // });
+  }
+};
+
+export const delSolutionById = (id, solutionId) => async (dispatch) => {
+  try {
+    await axios.delete(
+      `http://localhost:5000/api/solution/${id}/${solutionId}`
+    );
+
+    dispatch({
+      type: DELSOL_SUCCESS,
+      payload: solutionId,
+    });
+  } catch (err) {
+    console.log(err);
+    console.log("In catch");
+    // dispatch({
+    //   type: ITEM_FAIL,
+    // });
   }
 };
